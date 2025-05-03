@@ -1,0 +1,17 @@
+{
+  "roles": [
+    {
+      "role": "Administrator",
+      "permissions": [
+        { "permission": "identity.user:admin" },
+        { "permission": "inventory.transaction:create" },
+        { "permission": "inventory.transaction:approve" },
+        { "permission": "inventory.transaction:reject" },
+        { "permission": "catalog.category:manage" },
+        { "permission": "catalog.product:create" },
+        { "permission": "catalog.product:create" }
+      ]
+    }
+  ],
+  "users": []
+}

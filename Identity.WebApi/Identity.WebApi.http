@@ -1,0 +1,9 @@
+@Identity.WebApi_HostAddress = http://localhost:5126
+@jwt = null
+
+POST {{Identity.WebApi_HostAddress}}/api/security/login
+Accept: application/json
+
+
+
+###

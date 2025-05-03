@@ -1,0 +1,46 @@
+[
+  {
+    "Mnemonic": "identity.user:admin",
+    "Module": "Security",
+    "Name": "Security Management",
+    "Description": "Allows the user to manage security settings."
+  },
+
+  {
+    "Mnemonic": "inventory.transaction:create",
+    "Module": "Inventory",
+    "Name": "`Transaction Creation",
+    "Description": "Allows the user to create inventory transaction."
+  },
+  {
+    "Mnemonic": "inventory.transaction:approve",
+    "Module": "Inventory",
+    "Name": "`Transaction Approve",
+    "Description": "Allows the user to approve inventory transactions."
+  },
+  {
+    "Mnemonic": "inventory.transaction:reject",
+    "Module": "Inventory",
+    "Name": "`Transaction Reject",
+    "Description": "Allows the user to reject inventory transactions."
+  },
+
+  {
+    "Mnemonic": "catalog.category:manage",
+    "Module": "Catalog",
+    "Name": "Category management",
+    "Description": "Allows the user to manage catalog categories."
+  },
+  {
+    "Mnemonic": "catalog.product:create",
+    "Module": "Catalog",
+    "Name": "Product Creation",
+    "Description": "Allows the user to create products for the Catalog."
+  },
+  {
+    "Mnemonic": "catalog.product:create",
+    "Module": "Catalog",
+    "Name": "Product Edition",
+    "Description": "Allows the user to edit products for the Catalog."
+  }
+] 

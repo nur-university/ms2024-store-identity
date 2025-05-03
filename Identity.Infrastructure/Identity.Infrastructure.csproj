@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Config\JwtOptions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="9.0.3" />
+    <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="9.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI" Version="9.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="9.0.0" />
+
+    <PackageReference Include="Joseco.Communication.External.RabbitMQ" Version="1.0.0" />
+    <PackageReference Include="Joseco.Outbox.EFCore" Version="1.0.0" />
+    <PackageReference Include="Joseco.Secrets.HashicorpVault" Version="1.0.0" />
+
+    <PackageReference Include="Nur.Store2025.Security" Version="1.0.0" />
+    <PackageReference Include="Nur.Store2025.Access.Identity" Version="1.0.0" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Identity.Application\Identity.Application.csproj" />
+  </ItemGroup>
+
+</Project>
