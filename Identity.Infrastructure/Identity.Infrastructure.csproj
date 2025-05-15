@@ -26,7 +26,7 @@
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="9.0.0" />
 
     <PackageReference Include="Joseco.Communication.External.RabbitMQ" Version="1.0.0" />
-    <PackageReference Include="Joseco.Outbox.EFCore" Version="1.0.0" />
+    <PackageReference Include="Joseco.Outbox.EFCore" Version="1.0.3" />
     <PackageReference Include="Joseco.Secrets.HashicorpVault" Version="1.0.0" />
 
     <PackageReference Include="Nur.Store2025.Security" Version="1.0.0" />

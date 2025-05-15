@@ -15,7 +15,6 @@ namespace Identity.WebApi.Controllers;
 public class SecurityController(ISecurityService securityService) : CustomController
 {
 
-
     [AllowAnonymous]
     [HttpPost]
     [Route("login")]

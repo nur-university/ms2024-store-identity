@@ -36,11 +36,5 @@
     "Module": "Catalog",
     "Name": "Product Creation",
     "Description": "Allows the user to create products for the Catalog."
-  },
-  {
-    "Mnemonic": "catalog.product:create",
-    "Module": "Catalog",
-    "Name": "Product Edition",
-    "Description": "Allows the user to edit products for the Catalog."
   }
 ] 

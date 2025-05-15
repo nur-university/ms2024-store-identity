@@ -13,5 +13,11 @@
       ]
     }
   ],
-  "users": []
+  "defaultUser": {
+    "userroles" : [
+      {
+        "role": "Administrator"
+      }
+    ]
+  }
 }

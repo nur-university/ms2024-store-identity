@@ -17,4 +17,9 @@ internal class InitializerJsonUser
     public string phone { get; set; }
     public string jobtitle { get; set; }
     public List<InitializerJsonUserRole> userroles { get; set; }
+
+    public InitializerJsonUser()
+    {
+        userroles = new List<InitializerJsonUserRole>();
+    }
 }

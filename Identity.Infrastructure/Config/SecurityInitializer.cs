@@ -13,12 +13,12 @@ namespace Identity.Infrastructure.Config;
 internal class SecurityInitializer(ILogger<SecurityInitializer> logger,
     UserManager<ApplicationUser> userManager,
     RoleManager<ApplicationRole> roleManager,
-    InitializerJsonConfig baseConfiguration) : ISecurityInitializer
+    InitializerJsonUser baseConfiguration) : ISecurityInitializer
 {
     private readonly ILogger<SecurityInitializer> _logger = logger;
     private readonly UserManager<ApplicationUser> _userManager = userManager;
     private readonly RoleManager<ApplicationRole> _roleManager = roleManager;
-    private readonly InitializerJsonConfig _baseConfiguration = baseConfiguration;
+    private readonly InitializerJsonUser _baseConfiguration = baseConfiguration;
 
     public async Task Initialize(string permissionJsonFilePath, string securityInitializationJsonFilePath)
     {
@@ -45,7 +45,15 @@ internal class SecurityInitializer(ILogger<SecurityInitializer> logger,
         }
 
         // Creates the users
-        initJsonObj.users = _baseConfiguration.users;
+        initJsonObj.defaultUser ??=  new InitializerJsonUser();
+        initJsonObj.defaultUser.user = _baseConfiguration.user;
+        initJsonObj.defaultUser.password = _baseConfiguration.password;
+        initJsonObj.defaultUser.email = _baseConfiguration.email;
+        initJsonObj.defaultUser.firstName = _baseConfiguration.firstName;
+        initJsonObj.defaultUser.lastName = _baseConfiguration.lastName;
+        initJsonObj.defaultUser.phone = _baseConfiguration.phone;
+        initJsonObj.defaultUser.jobtitle = _baseConfiguration.jobtitle;
+
         bool errorConnectingDatabase = await InitializeUsers(initJsonObj);
 
         if (errorConnectingDatabase)
@@ -67,23 +75,23 @@ internal class SecurityInitializer(ILogger<SecurityInitializer> logger,
     {
         //Asigna los roles a los usuarios en caso que no los tenga
         //Get User admin
-        foreach (var userJson in initJsonObj.users)
+        var userJson = initJsonObj.defaultUser;
+        
+        ApplicationUser? user = await _userManager.FindByNameAsync(userJson.user);
+
+        foreach (var roleJson in userJson.userroles)
         {
-            ApplicationUser? user = await _userManager.FindByNameAsync(userJson.user);
+            string roleName = roleJson.role.ToString();
+            ApplicationRole? identyRole = await _roleManager.FindByNameAsync(roleName);
+            IList<ApplicationUser> usersInRole = await _userManager.GetUsersInRoleAsync(identyRole!.Name!);
 
-            foreach (var roleJson in userJson.userroles)
+            if (!usersInRole.Any(x => x.Id == user!.Id!))
             {
-                string roleName = roleJson.role.ToString();
-                ApplicationRole? identyRole = await _roleManager.FindByNameAsync(roleName);
-                IList<ApplicationUser> usersInRole = await _userManager.GetUsersInRoleAsync(identyRole!.Name!);
-
-                if (!usersInRole.Any(x => x.Id == user!.Id!))
-                {
-                    await _userManager.AddToRoleAsync(user!, identyRole.Name!);
-                    _logger.LogInformation("Added role { RoleName } to User { UserName }", identyRole.Name, user!.UserName);
-                }
+                await _userManager.AddToRoleAsync(user!, identyRole.Name!);
+                _logger.LogInformation("Added role { RoleName } to User { UserName }", identyRole.Name, user!.UserName);
             }
         }
+        
     }
 
     private Dictionary<string, ApplicationPermission> InitializePermissions(string permissionJsonFilePath)
@@ -114,45 +122,45 @@ internal class SecurityInitializer(ILogger<SecurityInitializer> logger,
 
     private async Task<bool> InitializeUsers(InitializerJsonConfig initJsonObj)
     {
-        bool errorConnectingDatabase = false;
 
         // Creates the users
-        foreach (var userJson in initJsonObj.users)
+        var userJson = initJsonObj.defaultUser;
+        
+        string userName = userJson.user;
+        if (string.IsNullOrWhiteSpace(userName))
         {
-            string userName = userJson.user;
-            if (string.IsNullOrWhiteSpace(userName))
-            {
-                _logger.LogError("User entry in initializer json config file is not well formed, skipping user");
-                continue;
-            }
-
-            ApplicationUser? user = null;
-            try
-            {
-                user = await _userManager.FindByNameAsync(userName);
-            }
-            catch (Exception q)
-            {
-                errorConnectingDatabase = true;
-                _logger.LogError(q, "Error obtaining users from the database");
-                break;
-            }
-
-            if (user == null)
-            {
-                // User doesnt exist so we create it
-                user = new ApplicationUser(userJson.user, userJson.firstName, userJson.lastName, true, true);
-
-                IdentityResult userCreated = await _userManager.CreateAsync(user, userJson.password.ToString());
-                if (!userCreated.Succeeded)
-                {
-                    _logger.LogError("Didn't create user {username}", user.UserName);
-                    continue;
-                }
-                _logger.LogInformation("Created user {username}", user.UserName);
-            }
+            _logger.LogError("User entry in initializer json config file is not well formed, skipping user");
+            return true;
         }
-        return errorConnectingDatabase;
+
+        ApplicationUser? user = null;
+        try
+        {
+            user = await _userManager.FindByNameAsync(userName);
+        }
+        catch (Exception q)
+        {
+            _logger.LogError(q, "Error obtaining users from the database");
+            return true;
+        }
+
+        if (user == null)
+        {
+            // User doesn't exist so we create it
+            user = new ApplicationUser(userJson.user, userJson.firstName, userJson.lastName, true, true);
+            user.Email = userJson.email;
+            user.EmailConfirmed = true;
+
+            IdentityResult userCreated = await _userManager.CreateAsync(user, userJson.password.ToString());
+            if (!userCreated.Succeeded)
+            {
+                _logger.LogError("Didn't create user {username}", user.UserName);
+                return true; 
+            }
+            _logger.LogInformation("Created user {username}", user.UserName);
+        }
+        
+        return false;
     }
 
 

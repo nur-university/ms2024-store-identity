@@ -1,9 +1,9 @@
 ﻿using Identity.Infrastructure.Persistence.StoredModel;
+using Joseco.DDD.Core.Abstractions;
 using Joseco.Outbox.Contracts.Model;
-using Joseco.Outbox.EFCore;
+using Joseco.Outbox.EFCore.Persistence;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Joseco.DDD.Core.Abstractions;
 
 namespace Identity.Infrastructure.Persistence;
 
