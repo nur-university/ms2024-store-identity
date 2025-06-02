@@ -58,17 +58,17 @@ internal class SecurityService(UserManager<ApplicationUser> _userManager, SignIn
         IdentityResult userCreated = await _userManager.CreateAsync(newUser, password);
         if (!userCreated.Succeeded)
         {
-            string errorCode = null;
-            string description = null;
+            string? errorCode = null;
+            string? description = null;
             userCreated.Errors
                 .ToList()
                 .ForEach(error => {
-                    _logger.LogError("Error { ErrorCode }: { Description }", error.Code, error.Description);
+                    _logger.LogError("Error {ErrorCode}: {Description}", error.Code, error.Description);
                     errorCode = errorCode ?? error.Code;
                     description = description ?? error.Description;
                     });
 
-            return Result.Failure<Guid>(new Error($"RegisterUser.Error.{errorCode}", description, ErrorType.Failure));
+            return Result.Failure<Guid>(new Error($"RegisterUser.Error.{errorCode}", description!, ErrorType.Failure));
         }        
 
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
@@ -114,7 +114,7 @@ internal class SecurityService(UserManager<ApplicationUser> _userManager, SignIn
         foreach (var userRoleName in userRoles)
         {
             var userRole = await _roleManager.FindByNameAsync(userRoleName);
-            var listOfClaims = await _roleManager.GetClaimsAsync(userRole);
+            var listOfClaims = await _roleManager.GetClaimsAsync(userRole!);
 
             foreach (var item in listOfClaims)
             {

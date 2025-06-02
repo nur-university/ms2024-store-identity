@@ -2,13 +2,18 @@ using Identity.Application;
 using Identity.Infrastructure;
 using Identity.WebApi;
 using Identity.WebApi.Extensions;
+using Nur.Store2025.Observability;
 
 var builder = WebApplication.CreateBuilder(args);
+
+string serviceName = "identity.api";
+
+builder.Host.UseLogging(serviceName, builder.Configuration);
 
 // Add services to the container.
 builder.Services
     .AddApplication()
-    .AddInfrastructure(builder.Configuration, builder.Environment)
+    .AddInfrastructure(builder.Configuration, builder.Environment, serviceName)
     .AddPresentation(builder.Configuration, builder.Environment);
 
 

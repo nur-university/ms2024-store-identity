@@ -13,8 +13,6 @@ public static class ApplicationBuilderExtensions
         return app;
     }
 
-
-
     public static void UseHealthChecks(this WebApplication app)
     {
         app.MapHealthChecks("/health", new HealthCheckOptions

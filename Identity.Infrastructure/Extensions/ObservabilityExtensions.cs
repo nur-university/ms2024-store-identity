@@ -1,25 +1,33 @@
-﻿using Identity.Application.Services;
-using Identity.Infrastructure.Persistence;
-using Identity.Infrastructure.Services;
-using Joseco.CommunicationExternal.RabbitMQ;
+﻿using Identity.Infrastructure.Persistence;
+using Joseco.Communication.External.RabbitMQ;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Npgsql;
+using Nur.Store2025.Observability;
+using Nur.Store2025.Observability.Config;
 
 namespace Identity.Infrastructure.Extensions;
 
 public static class ObservabilityExtensions
 {
-    public static IServiceCollection AddObservability(this IServiceCollection services, IHostEnvironment environment)
+    public static IServiceCollection AddObservability(this IServiceCollection services, 
+        IHostEnvironment environment, string serviceName)
     {
-        services.AddScoped<ICorrelationIdProvider, CorrelationIdProvider>();
 
-        if (environment is IWebHostEnvironment)
+        var jaegerSettings = services.BuildServiceProvider().GetRequiredService<JeagerSettings>();
+        bool isWebApp = environment is IWebHostEnvironment;
+
+        services.AddObservability(serviceName, jaegerSettings,
+            builder =>
+            {
+                builder.AddSource("Joseco.Outbox")
+                    .AddSource("Joseco.Communication.RabbitMQ")
+                    .AddNpgsql();
+            },
+            shouldIncludeHttpInstrumentation: isWebApp);
+
+        if (isWebApp)
         {
             services.AddServicesHealthChecks();
         }

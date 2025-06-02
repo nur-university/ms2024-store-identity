@@ -14,7 +14,9 @@ internal class DbContextFactory : IDesignTimeDbContextFactory<SecurityDbContext>
     public SecurityDbContext CreateDbContext(string[] args)
     {
         var configuration = BuildConfiguration();
-        var connectionString = configuration.GetConnectionString("Database");
+        DataBaseSettings dataBaseSettings = new();
+        configuration.Bind("IdentityDatabaseConnectionString", dataBaseSettings);
+        var connectionString = dataBaseSettings.ConnectionString;
 
         var optionsBuilder = new DbContextOptionsBuilder<SecurityDbContext>();
         optionsBuilder.UseNpgsql(connectionString);

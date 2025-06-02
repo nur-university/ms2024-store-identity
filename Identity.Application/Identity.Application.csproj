@@ -14,7 +14,7 @@
 
     <PackageReference Include="Joseco.DDD.Core" Version="1.0.0" />
     <PackageReference Include="Nur.Store2025.Integration" Version="1.0.0" />
-    <PackageReference Include="Joseco.Outbox.Contracts" Version="1.0.0" />
+    <PackageReference Include="Joseco.Outbox.Contracts" Version="1.0.2" />
   </ItemGroup>
 
 </Project>

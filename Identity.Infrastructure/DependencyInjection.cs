@@ -1,7 +1,5 @@
 ﻿using Identity.Infrastructure.Extensions;
-using Joseco.CommunicationExternal.RabbitMQ;
-using Joseco.DDD.Core.Abstractions;
-using Joseco.Outbox.EFCore;
+using Joseco.Communication.External.RabbitMQ;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,14 +11,13 @@ public static class DependencyInjection
    
 
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, 
-        IConfiguration configuration, IHostEnvironment environment)
+        IConfiguration configuration, IHostEnvironment environment, string serviceName)
     {
         services.AddSecrets(configuration, environment)
             .AddDatabase()
-            .AddOutbox<DomainEvent>()
             .AddSecurityServices(environment)
             .AddRabbitMQ()
-            .AddObservability(environment);
+            .AddObservability(environment, serviceName);
 
         return services;
     }

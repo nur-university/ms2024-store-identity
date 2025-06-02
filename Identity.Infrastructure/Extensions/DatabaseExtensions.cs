@@ -1,10 +1,12 @@
 ﻿using Identity.Infrastructure.Persistence;
 using Identity.Infrastructure.Persistence.StoredModel;
 using Joseco.DDD.Core.Abstractions;
+using Joseco.Outbox.Contracts.Service;
 using Joseco.Outbox.EFCore.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Joseco.Outbox.EFCore;
 
 namespace Identity.Infrastructure.Extensions;
 
@@ -31,6 +33,9 @@ public static class DatabaseExtensions
         services.AddScoped<IDatabase, SecurityDbContext>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IOutboxDatabase<DomainEvent>, UnitOfWork>();
+        services.AddOutbox<DomainEvent>();
+
+        services.Decorate<IOutboxService<DomainEvent>, OutboxTracingService<DomainEvent>>();
 
         return services;
     }

@@ -1,5 +1,5 @@
 ﻿using Joseco.Communication.External.RabbitMQ.Services;
-using Joseco.CommunicationExternal.RabbitMQ;
+using Joseco.Communication.External.RabbitMQ;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Identity.Infrastructure.Extensions;

@@ -19,23 +19,37 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+    <PackageReference Include="Npgsql.OpenTelemetry" Version="9.0.3" />
 
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="9.0.3" />
     <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="9.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.UI" Version="9.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="9.0.0" />
 
-    <PackageReference Include="Joseco.Communication.External.RabbitMQ" Version="1.0.0" />
-    <PackageReference Include="Joseco.Outbox.EFCore" Version="1.0.3" />
+    <PackageReference Include="Joseco.Communication.External.RabbitMQ" Version="1.0.2" />
+    <PackageReference Include="Joseco.Outbox.EFCore" Version="1.0.4" />
     <PackageReference Include="Joseco.Secrets.HashicorpVault" Version="1.0.0" />
 
     <PackageReference Include="Nur.Store2025.Security" Version="1.0.0" />
     <PackageReference Include="Nur.Store2025.Access.Identity" Version="1.0.0" />
+    <PackageReference Include="Nur.Store2025.Observability" Version="1.0.0" />
+
+    <PackageReference Include="Scrutor" Version="6.0.1" />
+
+    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
+    <PackageReference Include="Serilog.Enrichers.Process" Version="3.0.0" />
+    <PackageReference Include="Serilog.Enrichers.Span" Version="3.1.0" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="9.0.0" />
 
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Identity.Application\Identity.Application.csproj" />
+    
+<ProjectReference Include="..\Identity.Application\Identity.Application.csproj" />
   </ItemGroup>
 
 </Project>

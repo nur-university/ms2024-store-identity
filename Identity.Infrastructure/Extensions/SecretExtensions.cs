@@ -6,27 +6,32 @@ using Joseco.Secrets.HashicorpVault;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Nur.Store2025.Observability.Config;
 using Nur.Store2025.Security.Config;
 
 namespace Identity.Infrastructure.Extensions;
 
 public static class SecretExtensions
 {
+    private const string jeagerSettingsSecretName = "JaegerSettings";
+    private const string jwtOptionsSecretName = "JwtOptions";
+    private const string rabbitMqSettingsSecretName = "RabbitMqSettings";
+    private const string identityDatabaseConnectionStringSecretName = "IdentityDatabaseConnectionString";
+    private const string defaultUserSecretName = "DefaultUser";
+
     public static IServiceCollection AddSecrets(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
     {
         bool useSecretManager = configuration.GetValue<bool>("UseSecretManager", false);
         if (environment.IsDevelopment() && !useSecretManager)
         {
-            string jwtOptionsSecretName = "JwtOptions";
-            string rabbitMqSettingsSecretName = "RabbitMqSettings";
-            string identityDatabaseConnectionStringSecretName = "IdentityDatabaseConnectionString";
-            string defaultUserSecretName = "DefaultUser";
+            
 
             configuration
                 .LoadAndRegister<JwtOptions>(services, jwtOptionsSecretName)
                 .LoadAndRegister<RabbitMqSettings>(services, rabbitMqSettingsSecretName)
                 .LoadAndRegister<DataBaseSettings>(services, identityDatabaseConnectionStringSecretName)
-                .LoadAndRegister<InitializerJsonUser>(services, defaultUserSecretName);
+                .LoadAndRegister<InitializerJsonUser>(services, defaultUserSecretName)
+                .LoadAndRegister<JeagerSettings>(services, jeagerSettingsSecretName);
 
             return services;
         }
@@ -53,11 +58,6 @@ public static class SecretExtensions
 
     private static void LoadSecretsFromVault(this IServiceCollection services)
     {
-        string jwtOptionsSecretName = "JwtOptions";
-        string rabbitMqSettingsSecretName = "RabbitMqSettings";
-        string identityDatabaseConnectionStringSecretName = "IdentityDatabaseConnectionString";
-        string defaultUserSecretName = "DefaultUser";
-
         string vaultMountPoint = "secrets";
 
         using var serviceProvider = services.BuildServiceProvider();
